@@ -10,6 +10,15 @@ Now we have the two modules for each view with their resources separetad but we 
 
 You can find more details about lazy loading with the Angular router in the [router official documentation](https://angular.io/guide/router)
 
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
 
  ## Authors:
 
