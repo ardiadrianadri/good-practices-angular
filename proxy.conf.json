@@ -1,0 +1,6 @@
+{
+  "/v1": {
+    "target": "https://gateway.marvel.com:443",
+    "secure": false
+  }
+}
