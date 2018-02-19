@@ -169,7 +169,7 @@ export class HeroesSearchComponent {
   ) {
 
     this._configToken = {
-      marvelPublicKey: '<Your public key from marvel account',
+      marvelPublicKey: '<Your public key from marvel account>',
       marvelPrivateKey: '<Your private key from marvel account>'
     };
 
@@ -463,7 +463,7 @@ export class DetailComponent {
     let id: string;
 
     this._configToken = {
-      marvelPublicKey: '<Your public key from marvel account',
+      marvelPublicKey: '<Your public key from marvel account>',
       marvelPrivateKey: '<Your private key from marvel account>'
     };
 

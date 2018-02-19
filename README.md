@@ -18,6 +18,15 @@ The main objective of this workshop is to understand the reason of these good pr
 
 This is the first step of the workshop. It is mark with the git tag "step-0". To go to the second step you should pull the tag "step-1" from the github repository. The same for the second, third, fourth and so on consecutively for the rest of the steps. In each step the README file is different. It will explain the good practice which is applied in the code of the git node. To see how the code change with each good practice you need only to make a 'git diff' between two different steps.
 
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
  ## Authors:
 
  ### Adrian Ferreres:
