@@ -1,0 +1,107 @@
+<div class="page-title">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <h1 *ngIf="!hero">Details of Character</h1>
+      <h1 *ngIf="hero">Details of {{hero.name}}</h1>
+    </div>
+  </div>
+</div>
+<div class="info-character">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="loading image" *ngIf="loadingImage">
+          <h1 class="loading-banner">Loading...</h1>
+        </div>
+        <div class="main-image" *ngIf="!loadingImage">
+          <img src="{{hero.image}}" class="img-fluid"/>
+        </div>
+      </div>
+      <div class="col">
+        <div class="loading description" *ngIf="loadingImage">
+          <h1 class="loading-banner">Loading...</h1>
+        </div>
+        <div class="main-description" *ngIf="!loadingImage">
+          <span>{{hero.description}}</span>
+        </div>
+        <div class="home-button">
+          <button class="btn btn-primary btn-lg btn-block" (click)="goHome()" >Home</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="comics-events-stories">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="loading comics" *ngIf="loadingComics">
+          <h1 class="loading-banner">Loading...</h1>
+        </div>
+        <div class="table-title">
+          <h1>Comics:</h1>
+        </div>
+        <div class="container-fluid" *ngIf="comics">
+          <div class="row">
+            <div class="col">
+              <table class="table table-hover table-bordered table-results">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let comic of comics" class="clickable">
+                    <td>{{comic.title}}</td>
+                    <td>{{comic.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button type="button" class="btn btn-secondary pag" (click)="setComicPage(0)">first</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setComicPage (comicsPage - 1)">prev</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setComicPage(comicsPage + 1)">next</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setComicPage(comicsLastPage)">last</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="loading sereies" *ngIf="loadingSeries">
+          <h1 class="loading-banner">Loading...</h1>
+        </div>
+        <div class="table-title">
+          <h1>Series:</h1>
+        </div>
+        <div class="container-fluid" *ngIf="series">
+          <div class="row">
+            <div class="col">
+              <table class="table table-hover table-bordered table-results">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let serie of series" class="clickable">
+                    <td>{{serie.title}}</td>
+                    <td>{{serie.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button type="button" class="btn btn-secondary pag" (click)="setSeriesPage(0)">first</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setSeriesPage (comicsPage - 1)">prev</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setSeriesPage (comicsPage + 1)">next</button>
+            <button type="button" class="btn btn-secondary pag" (click)="setSeriesPage (comicsLastPage)">last</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+div.comics-events-stories {
+  border-top: solid 3px;
+  margin: 2% 1%;
+  padding-top: 1%;
+}
+.table-results { margin-top: 10px; }
+.pag { margin: 0px 5px; }
+select.form-control.pag { width: 8%; }
+div.home-button {
+  margin: 1% 5% 1% 0%;
+}
+div.main-description {
+  font-size: 30px;
+  margin: 1% 5% 1% 0%;
+  border: solid 3px;
+  padding: 28px;
+  border-radius: 12px;
+}
+div.main-image {
+  width: 50%;
+}
+div.loading {
+  display: flex;
+  justify-content: center;
+}
+
+div.loading.image {
+  align-items: center;
+}
+div.loading.description {
+  align-items: center;
+}
+h1.loading-banner {
+  background: rgba(0,0,0,0.5);
+  padding: 1%;
+  border-radius: 12px;
+  position: absolute;
+  z-index: 999;
+  margin: 5%;
+  font-size: 50px;
+  animation:colorchange 20s infinite alternate;
+}
+
+@keyframes colorchange {
+  0% {
+    color: blue;
+  }
+  10% {
+    color: #8e44ad;
+  }
+  20% {
+    color: #1abc9c;
+  }
+  30% {
+    color: #d35400;
+  }
+  40% {
+    color: blue;
+  }
+  50% {
+    color: #34495e;
+  }
+  60% {
+    color: blue;
+  }
+  70% {
+    color: #2980b9;
+  }
+  80% {
+    color: #f1c40f;
+  }
+  90% {
+    color: #2980b9;
+  }
+  100% {
+    color: pink;
+  }
+}

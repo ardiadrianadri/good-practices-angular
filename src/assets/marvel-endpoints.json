@@ -1,0 +1,6 @@
+{
+  "searchCharacter": "v1/public/characters",
+  "detailsCharacter": "/v1/public/characters/##id##",
+  "comicsCharacter": "/v1/public/characters/##id##/comics",
+  "seriesCharacter": "/v1/public/characters/##id##/series"
+}
