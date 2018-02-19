@@ -1,0 +1,25 @@
+# Templates separated from the code
+
+This rule is easy. Never mix html and css templates with the typescript code. The reasons are:
+
+1- **Easier to read**: The only way to hardcore the templates in the Angular componets is by an string. That means the editors/ IDEs can not use any color code, check the tags closed and gramma check on those templates because they interpret them as a plain text. For a developer it makes harder to read and harder to search for errors without the help of the editors/ IDEs plugins (in fact the css templates in the previus step had error which I couldn't see until I moved the templates to an css files)
+
+2- **Better organization of the code**: It is now possible to change the view without touching the TypeScript file. In the event that we have a team with a web design expert, I'm quite sure that he will be grateful to be able to change the html and css templates without touching the Typescript files.
+
+ ## Changes made
+
+I've created two folders; details for the templates of the details web page and search for the ones of search web page. All the files has the word "component" between the file name and the extension to make clear that these files belongs to an Angular component. After that, I moved the html and css code to their respective files and I changed the hardcore templates inside the components by the path to the files.
+
+**Advice**: 
+It is not a good idea to make a deep folder tree in the project. Usually the people like to make a lot of folders to improve the organization of the code but this brings others problems. A workspace with a lot of deeps paths it makes harder to find the files for new comers in the project and it makes easier to have errors in the relative paths. The best, in my opinion, is to have only one level under the app folder.  
+
+ ## Authors:
+
+ ### Adrian Ferreres:
+ Angular developer since beta 17 and technical speaker. He has worked in several IT consulting projects in Spain with the framework and, currently works as frontend developer for Censhare in Munich
+
+ ### Ruben Aguilera:
+ Regular technical speaker, Angular and Polymer expert, developer trainers and advanced software architect. Ruben had worked on many projects, as a full stack developer. Currently working in Spain for Autentia and wrote all his lessons learned in the book ["Angular: guía práctica"(only in Spanish... sorry)](https://leanpub.com/angular-guia-practica)
+
+### Alfredo de la Calle:
+Angular, React, Polymer, native javascript ..... all-terrain developer. Alfredo has worked in startups and some project of IT consultancies.  Currently, he works at GFT consulting as a front-end developer.
