@@ -13,6 +13,16 @@ I've created two folders; details for the templates of the details web page and 
 **Advice**: 
 It is not a good idea to make a deep folder tree in the project. Usually the people like to make a lot of folders to improve the organization of the code but this brings others problems. A workspace with a lot of deeps paths it makes harder to find the files for new comers in the project and it makes easier to have errors in the relative paths. The best, in my opinion, is to have only one level under the app folder.  
 
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
+
  ## Authors:
 
  ### Adrian Ferreres:
