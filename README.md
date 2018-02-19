@@ -6,7 +6,7 @@ In order to avoid that problem we have to keep separeted the view logic from the
 
  ## Changes made
 
-A lot of changes this time. The main change is that I removed the authorization and http request logic from the components and I put them in the "auht.service.ts" and "marvel-api.service.ts" respectively. I could put both processes in one provider but I want classes as simple as possible. The two providers are injected in a new module call it "core.module.ts". The reason is that the "marvel-api.service.ts" is needed in both components, so it can not be injected only in one of the two modules... it would be weird.
+A lot of changes this time. The main change is that I removed the authorization and http request logic from the components and I put them in the "auth.service.ts" and "marvel-api.service.ts" respectively. I could put both processes in one provider but I want classes as simple as possible. The two providers are injected in a new module call it "core.module.ts". The reason is that the "marvel-api.service.ts" is needed in both components, so it can not be injected only in one of the two modules... it would be weird.
 Think about it, as I explained earlier, the providers are singleton classes. That means that it does not matter how many modules is injected; it will only be an instance of each provider. The way it works is that the last provider injected overwrite the previous one. It is not a big deal if your provider does not have state, but if it have it, it will be the cause of several strange behaviors in the application. As you know, we are using the lazy loading, which means that the modules are loaded into the browser as soon as the application needs them. If a second module is loaded with a second injection from a provider in the middle of a running application, all the information that the instance has will be deleted. It's like resetting the provider; start from 0. So, to solve that problem, we must make sure that each provider is injected once and only once. In our case, we could inject it in the search module ... or in the details module, but:
 
 1- The module where we inject it can not be reused in other places of the application
@@ -20,6 +20,16 @@ To end I will like to point that, now, the "marvel-elements" interface is also n
 
 **Note**:
 One more note. In these changes there was a side effect that I did not expect. I have created a filter in "marvel-api.service.ts" that removes the values without information that I get from the Marvel API (There are some, believe me). This improvement did not exist in the previous versions for a simple reason; too much stuff in my head at the same time. When I separated the logics, my mind focused on what I needed to get the data alone and I realized that I lacked a method to eliminate the blank data. Another advantage is to make more specific classes; the resulting code is more robust because you only focus on one requirement at a time. It happens even in the most expert developers ;)
+
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
 
  ## Authors:
 
