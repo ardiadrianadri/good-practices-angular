@@ -11,6 +11,16 @@ The other files, the "details.router.ts" and the "search.router.ts" are the rout
 **Note**:
 There are people who likes to put all the types and interfaces definitions in one single file per component. As the interfaces and types are only declaration and it doesn't have any logic I think that it is fine do it in that way. However, It is better to abuse this rule than to fall short in its use. In the doubt of whether to separate code or not, separate. It is for this reason that I decide to separate each definition in its own file
 
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
+
  ## Authors:
 
  ### Adrian Ferreres:
