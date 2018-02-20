@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { Hero } from '../common/hero';
 import { MarvelElements } from '../common/marvel-elements';
 import { MarvelAnswer } from '../common/marvel-answer';
+
 import { MARVEL_API_CONFIGURATION, idExpr } from './marvel-api.configuration';
 
 @Injectable()
@@ -115,13 +116,13 @@ export class MarvelApi {
   }
 
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
-      return this._marvelConfig$
-      .concatMap((endpoints: MarvelEndPoints) => {
-        this._endpoints = endpoints;
-        return this._auth.getAuthParams();
-      })
-      .concatMap((authParams: AuthParams) => {
-        let finalUrl = this._endpoints.comicsCharacter.replace(idExpr,id);
+    return this._marvelConfig$
+    .concatMap((endpoints: MarvelEndPoints) => {
+      this._endpoints = endpoints;
+      return this._auth.getAuthParams();
+    })
+    .concatMap((authParams: AuthParams) => {
+      let finalUrl = this._endpoints.comicsCharacter.replace(idExpr,id);
         finalUrl = this._setAuthParams(finalUrl, authParams);
         finalUrl = this._setPageParams(finalUrl, limit, offset);
 

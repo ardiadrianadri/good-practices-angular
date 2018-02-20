@@ -14,7 +14,6 @@ import { MarvelApi } from '../core/marvel-api.service';
 export class HeroesSearchComponent {
 
   private static _descriptionLimit = 100;
-
   private _url: string;
 
   public heroName: string;
