@@ -21,7 +21,7 @@ export class MarvelApi {
   constructor (
     private _http: HttpClient,
     private _auth: AuthService,
-    @Inject(MARVEL_API_CONFIGURATION) private _marvelConfig: Observable<MarvelEndPoints>
+    @Inject(MARVEL_API_CONFIGURATION) private _marvelConfig$: Observable<MarvelEndPoints>
   ) {}
 
   private _setAuthParams(url: string, authParams: AuthParams): string {
@@ -63,7 +63,7 @@ export class MarvelApi {
   }
 
   public getListHeroes(name: string, limit: number, offset: number): Observable<MarvelAnswer> {
-    return this._marvelConfig
+    return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
       this._endpoints = endpoints;
       return this._auth.getAuthParams();
@@ -91,7 +91,7 @@ export class MarvelApi {
   }
 
   public getDetailsHero(id: string): Observable<MarvelAnswer> {
-    return this._marvelConfig
+    return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
       this._endpoints = endpoints;
       return this._auth.getAuthParams();
@@ -115,7 +115,7 @@ export class MarvelApi {
   }
 
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
-      return this._marvelConfig
+      return this._marvelConfig$
       .concatMap((endpoints: MarvelEndPoints) => {
         this._endpoints = endpoints;
         return this._auth.getAuthParams();
@@ -144,7 +144,7 @@ export class MarvelApi {
   }
 
   public getListSeries(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
-    return this._marvelConfig
+    return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
       this._endpoints = endpoints;
       return this._auth.getAuthParams();

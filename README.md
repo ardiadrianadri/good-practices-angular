@@ -6,7 +6,25 @@ When you are writting a literal in the code, stop and think because, the most pr
 
  ## Changes made
 
-The most critical values that we have in the app are the url of the Marvel API and the private and public key which we use to identify us in the Marvel systems 
+The most critical values that we have in the app are the url of the Marvel API and the private and public key which we use to identify us in their systems. These values are strong dependents of the Marvel API; if Marvel change the urls or the way an user authenticates in its API our app won't work any more. In consequence, these literal are the perfect candidates to be in an external config file. 
+
+In the assets folder, I have created two json files; the "marvel-endpoints.json" and the "marvel-tokens.json" for the url and the public / private keys, respectively. Each file is consumed by an HTTP request made from a factory that can be found in the files "auth.configuration.ts" and "marvel-api.configuration.ts". The factories return an observable element that contains an object with the values of the configuration files. These objects are referenced by the injection tokens "AUTH_CONFIGURATION" for "marvel-tokens.json" and "MARVEL_API_CONFIGURATION" for "marvel.endpoints.json".
+
+An injection tokens are like empty providers which can be fill with a constant, other provider, a class or, in this case, with the result of a factory. At the end, what we have is a singleton value referenced by a variable which is the injection token. You can learn more about the injection in Angular from the [offical documentation](https://angular.io/guide/dependency-injection) or from [this article of Pascal Pretch](https://blog.thoughtram.io/angular/2015/05/18/dependency-injection-in-angular-2.html)
+
+The configuration that relates each token to its factory is done in the "core.module.ts".
+
+We have more literals apart the urls and the keys. We have the limit of the length in the description which is 100 and 50 characters in the search and details components respectively. We also have the limit of the rows in the details tables. All these values are only dependend of the app. For this reason, I added them in a static values in each of their components classes.
+
+## How to run the example
+This example use the public Marvel API as a backend data source. To use it you need to have a Marvel public and private key. To get them is easy; go to [the developers portal](https://developer.marvel.com/), create an account and copy your key from your [account information page](https://developer.marvel.com/account). After that, look for in the code where the keys are needed:
+```
+marvelPublicKey: '<Your public key from marvel account>',
+marvelPrivateKey: '<Your private key from marvel account>'
+```
+And replace the strings "<Your public key from marvel account>" and "<Your private key from marvel account>" for your public and private key respectively.
+
+**Important: do not push in the github repository your private key**
 
  ## Authors:
 

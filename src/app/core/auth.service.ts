@@ -12,11 +12,11 @@ import { AUTH_CONFIGURATION } from "./auth.configuration";
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(AUTH_CONFIGURATION) private _authConfig: Observable<AuthToken>
+    @Inject(AUTH_CONFIGURATION) private _authConfig$: Observable<AuthToken>
   ) {}
 
   public getAuthParams(): Observable<AuthParams> {
-    return this._authConfig
+    return this._authConfig$
     .map((authToken: AuthToken) => {
       let ts: string;
       let hash: string;
