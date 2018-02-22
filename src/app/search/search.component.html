@@ -1,17 +1,5 @@
-<div class="page-title">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <h1>Search your favorite hero</h1>
-    </div>
-  </div>
-</div>
-<div class="loading" *ngIf="loading">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <h1 class="loading-banner">Loading...</h1>
-    </div>
-  </div>
-</div>
+<hero-title title="'Search your hero'"></hero-title>
+<hero-loading *ngIf="loading"></hero-loading>
 <div class="search-form">
   <div class="container-fluid">
     <div class="row">

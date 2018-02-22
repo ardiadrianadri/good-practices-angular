@@ -6,5 +6,5 @@ export interface MarvelAnswer {
   limit: number;
   total: number;
   count: number;
-  result: Hero[] | MarvelElements[]
+  result: Hero[] | MarvelElements[];
 };

@@ -1,26 +1,15 @@
-<div class="page-title">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <h1 *ngIf="!hero">Details of Character</h1>
-      <h1 *ngIf="hero">Details of {{hero.name}}</h1>
-    </div>
-  </div>
-</div>
+<hero-title title="{{title}}"></hero-title>
 <div class="info-character">
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="loading image" *ngIf="loadingImage">
-          <h1 class="loading-banner">Loading...</h1>
-        </div>
+        <hero-loading class="details" *ngIf="loadingImage"></hero-loading>
         <div class="main-image" *ngIf="!loadingImage">
           <img src="{{hero.image}}" class="img-fluid"/>
         </div>
       </div>
       <div class="col">
-        <div class="loading description" *ngIf="loadingImage">
-          <h1 class="loading-banner">Loading...</h1>
-        </div>
+          <hero-loading class="details" *ngIf="loadingImage"></hero-loading>
         <div class="main-description" *ngIf="!loadingImage">
           <span>{{hero.description}}</span>
         </div>
@@ -35,9 +24,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="loading comics" *ngIf="loadingComics">
-          <h1 class="loading-banner">Loading...</h1>
-        </div>
+          <hero-loading class="details" *ngIf="loadingComics"></hero-loading>
         <div class="table-title">
           <h1>Comics:</h1>
         </div>
@@ -69,9 +56,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="loading sereies" *ngIf="loadingSeries">
-          <h1 class="loading-banner">Loading...</h1>
-        </div>
+          <hero-loading class="details" *ngIf="loadingSeries"></hero-loading>
         <div class="table-title">
           <h1>Series:</h1>
         </div>

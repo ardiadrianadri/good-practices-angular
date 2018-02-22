@@ -21,6 +21,7 @@ export class DetailComponent {
   private static _limit = 5;
   private _id: string;
 
+  public title = 'Details of Character';
   public hero: Hero;
   public comics: MarvelElements[];
   public series: MarvelElements[];
@@ -45,6 +46,7 @@ export class DetailComponent {
     this._marvelService.getDetailsHero(this._id)
     .switchMap((answer: MarvelAnswer) => {
       this.hero = (answer.result[0] as Hero);
+      this.title = `Details of ${this.hero.name}`;
       this.loadingImage = false;
       return this._getComics();
     })
