@@ -1,23 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { TitleComponent } from './title.component';
 import { LoadingComponent } from './loading.component';
+import { TableComponent } from './table.component';
 
 const SharedComponents = [
   TitleComponent,
-  LoadingComponent
+  LoadingComponent,
+  TableComponent
+]
+
+const SharedImports = [
+  CommonModule,
+  FormsModule
 ]
 
 @NgModule({
   imports: [
-    CommonModule,
+    ...SharedImports
   ],
   declarations: [
     ...SharedComponents
   ],
   exports: [
-    CommonModule,
+    ...SharedImports,
     ...SharedComponents
   ]
 })
