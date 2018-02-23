@@ -1,29 +1,27 @@
-<div class="search-result">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <table class="table table-hover table-bordered table-results">
-          <thead>
-            <tr>
-              <th *ngFor="let column of tableConfig.columns">{{column.title}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let element of tableData.data" (click)="onRowClick(element.id)" class="clickable">
-              <td *ngFor="let column of tableConfig.columns">{{element[column.field]}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <table class="table table-hover table-bordered table-results">
+        <thead>
+          <tr>
+            <th *ngFor="let column of tableConfig.columns">{{column.title}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of tableData.data" (click)="onRowClick(element.id)" class="clickable">
+            <td *ngFor="let column of tableConfig.columns">{{element[column.field]}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="row justify-content-center">
-      <button type="button" class="btn btn-secondary pag" (click)="onChangePage(0)">first</button>
-      <button type="button" class="btn btn-secondary pag" (click)="onChangePage(actualPage - 1)">prev</button>
-      <select [(ngModel)]="limit" class="form-control pag" *ngIf="tableConfig.pageSize" (change)="onChangePage(0)">
-        <option *ngFor="let pageSize of tableConfig.pageSize" value="{{pageSize}}">{{pageSize}}</option>
-      </select>
-      <button type="button" class="btn btn-secondary pag" (click)="onChangePage(actualPage + 1)">next</button>
-      <button type="button" class="btn btn-secondary pag" (click)="onChangePage(tableData.lastPage)">last</button>
-    </div>
+  </div>
+  <div class="row justify-content-center">
+    <button type="button" class="btn btn-secondary pag" (click)="onChangePage(0)">first</button>
+    <button type="button" class="btn btn-secondary pag" (click)="onChangePage(actualPage - 1)">prev</button>
+    <select [(ngModel)]="limit" class="form-control pag" *ngIf="tableConfig.pageSize" (change)="onChangePage(0)">
+      <option *ngFor="let pageSize of tableConfig.pageSize" value="{{pageSize}}">{{pageSize}}</option>
+    </select>
+    <button type="button" class="btn btn-secondary pag" (click)="onChangePage(actualPage + 1)">next</button>
+    <button type="button" class="btn btn-secondary pag" (click)="onChangePage(tableData.lastPage)">last</button>
   </div>
 </div>

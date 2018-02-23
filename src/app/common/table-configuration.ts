@@ -6,5 +6,5 @@ interface Column {
 export interface TableConfiguration {
   columns: Column[],
   pageSize?: number[],
-  initialSize: number
+  initialSize?: number
 }
