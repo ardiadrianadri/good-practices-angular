@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -12,19 +12,18 @@ import { Hero } from '../common/hero';
 import { MarvelElements } from '../common/marvel-elements';
 import { MarvelAnswer } from '../common/marvel-answer';
 
+import { MARVEL_API_CONFIGURATION, idExpr } from './marvel-api.configuration';
+
 @Injectable()
 export class MarvelApi {
 
   private _endpoints: MarvelEndPoints;
 
-  constructor (private _http: HttpClient, private _auth: AuthService) {
-    this._endpoints = {
-      searchCharacter: 'v1/public/characters',
-      detailsCharacter: '/v1/public/characters/##id##',
-      comicsCharacter: '/v1/public/characters/##id##/comics',
-      seriesCharacter: '/v1/public/characters/##id##/series'
-    }
-  }
+  constructor (
+    private _http: HttpClient,
+    private _auth: AuthService,
+    @Inject(MARVEL_API_CONFIGURATION) private _marvelConfig$: Observable<MarvelEndPoints>
+  ) {}
 
   private _setAuthParams(url: string, authParams: AuthParams): string {
     return (url.indexOf('?') < 0) ?
@@ -65,7 +64,11 @@ export class MarvelApi {
   }
 
   public getListHeroes(name: string, limit: number, offset: number): Observable<MarvelAnswer> {
-    return this._auth.getAuthParams()
+    return this._marvelConfig$
+    .concatMap((endpoints: MarvelEndPoints) => {
+      this._endpoints = endpoints;
+      return this._auth.getAuthParams();
+    })
     .concatMap ((authPraams: AuthParams) => {
       let finalUrl = this._setAuthParams(this._endpoints.searchCharacter, authPraams);
       finalUrl = `${finalUrl}&nameStartsWith=${name}`;
@@ -89,9 +92,13 @@ export class MarvelApi {
   }
 
   public getDetailsHero(id: string): Observable<MarvelAnswer> {
-    return this._auth.getAuthParams()
+    return this._marvelConfig$
+    .concatMap((endpoints: MarvelEndPoints) => {
+      this._endpoints = endpoints;
+      return this._auth.getAuthParams();
+    })
     .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.detailsCharacter.replace('##id##', id);
+      let finalUrl = this._endpoints.detailsCharacter.replace(idExpr, id);
       finalUrl = this._setAuthParams(finalUrl, authParams);
 
       return this._http.get(finalUrl);
@@ -109,9 +116,13 @@ export class MarvelApi {
   }
 
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
-      return this._auth.getAuthParams()
-      .concatMap((authParams: AuthParams) => {
-        let finalUrl = this._endpoints.comicsCharacter.replace('##id##',id);
+    return this._marvelConfig$
+    .concatMap((endpoints: MarvelEndPoints) => {
+      this._endpoints = endpoints;
+      return this._auth.getAuthParams();
+    })
+    .concatMap((authParams: AuthParams) => {
+      let finalUrl = this._endpoints.comicsCharacter.replace(idExpr,id);
         finalUrl = this._setAuthParams(finalUrl, authParams);
         finalUrl = this._setPageParams(finalUrl, limit, offset);
 
@@ -134,9 +145,13 @@ export class MarvelApi {
   }
 
   public getListSeries(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
-    return this._auth.getAuthParams()
+    return this._marvelConfig$
+    .concatMap((endpoints: MarvelEndPoints) => {
+      this._endpoints = endpoints;
+      return this._auth.getAuthParams();
+    })
     .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.seriesCharacter.replace('##id##',id);
+      let finalUrl = this._endpoints.seriesCharacter.replace(idExpr,id);
       finalUrl = this._setAuthParams(finalUrl, authParams);
       finalUrl = this._setPageParams(finalUrl, limit, offset);
 

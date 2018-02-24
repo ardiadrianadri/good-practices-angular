@@ -13,6 +13,7 @@ import { MarvelApi } from '../core/marvel-api.service';
 })
 export class HeroesSearchComponent {
 
+  private static _descriptionLimit = 100;
   private _url: string;
 
   public heroName: string;
@@ -36,7 +37,7 @@ export class HeroesSearchComponent {
       (data: MarvelAnswer) => {
         this.lastPage = Math.ceil(data.total / this.limit) - 1;
         this.heroesResult = (data.result as Hero[]).map((hero: Hero) => {
-          hero.description = (hero.description) ? hero.description.substring(0,100) : '';
+          hero.description = (hero.description) ? hero.description.substring(0, HeroesSearchComponent._descriptionLimit) : '';
           return hero;
         });
         this.loading = false;
