@@ -17,7 +17,8 @@ import { MarvelApi } from '../core/marvel-api.service';
 })
 export class DetailComponent {
 
-  private _limit = 5;
+  private static _descriptionLimit = 50;
+  private static _limit = 5;
   private _id: string;
 
   public hero: Hero;
@@ -61,9 +62,9 @@ export class DetailComponent {
 
   private _getComics(): Observable<MarvelElements[]> {
     this.loadingComics = true;
-    return this._marvelService.getListComics(this._id, this._limit, (this._limit * this.comicsPage))
+    return this._marvelService.getListComics(this._id, DetailComponent._limit, (DetailComponent._limit * this.comicsPage))
     .map((answer: MarvelAnswer) => {
-      this.comicsLastPage = Math.ceil(answer.total / this._limit) - 1;
+      this.comicsLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
       this.loadingComics = false;
       return (answer.result as MarvelElements[]);
     });
@@ -71,16 +72,16 @@ export class DetailComponent {
 
   private _shortDescription (elements: MarvelElements[]): MarvelElements[] {
     return elements.map((element: MarvelElements) => {
-      element.description = (element.description) ? element.description.substring(0,50) : '';
+      element.description = (element.description) ? element.description.substring(0,DetailComponent._descriptionLimit) : '';
       return element;
     });
   }
 
   private _getSeries(): Observable<MarvelElements[]> {
     this.loadingSeries = true;
-    return this._marvelService.getListSeries(this._id, this._limit, (this._limit * this.seriesPage))
+    return this._marvelService.getListSeries(this._id, DetailComponent._limit, (DetailComponent._limit * this.seriesPage))
     .map((answer: MarvelAnswer) => {
-      this.seriesLastPage = Math.ceil(answer.total / this._limit) - 1;
+      this.seriesLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
       this.loadingSeries = false;
       return (answer.result as MarvelElements[]);
     });
