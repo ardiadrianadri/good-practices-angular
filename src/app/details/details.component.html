@@ -28,14 +28,14 @@
         <div class="table-title">
           <h1>Comics:</h1>
         </div>
-        <hero-table [tableConfig]="tableConfig" [tableData]="comics" (requestNewData)="getComics($event)" *ngIf="comics" ></hero-table>
+        <hero-table [tableConfig]="tableConfig" [tableData]="comics$ | async" (emitAction)="doActionComics($event)"></hero-table>
       </div>
       <div class="col">
           <hero-loading class="details" *ngIf="loadingSeries"></hero-loading>
         <div class="table-title">
           <h1>Series:</h1>
         </div>
-        <hero-table [tableConfig]="tableConfig" [tableData]="series" (requestNewData)="getSeries($event)" *ngIf="series"></hero-table>
+        <hero-table [tableConfig]="tableConfig" [tableData]="series$ | async" (emitAction)="doActionSeries($event)"></hero-table>
       </div>
     </div>
   </div>

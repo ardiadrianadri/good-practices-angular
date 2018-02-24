@@ -4,18 +4,23 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectionStrategy
 } from '@angular/core';
+
 
 import { TableData } from '../common/table-data';
 import { TableConfiguration } from '../common/table-configuration';
 import { PagEvent } from '../common/pag-event';
+import { TableActions } from '../common/table-actions';
+import { TableTypeActions } from '../common/table-type-actions';
 
 @Component({
   selector: 'hero-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit {
 
@@ -26,10 +31,7 @@ export class TableComponent implements OnInit {
   public tableConfig: TableConfiguration;
 
   @Output()
-  public rowClick: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output()
-  public requestNewData: EventEmitter<PagEvent> = new EventEmitter<PagEvent>();
+  public emitAction: EventEmitter<TableActions> = new EventEmitter<TableActions>();
 
   public limit = 0;
   public actualPage = 0;
@@ -45,11 +47,18 @@ export class TableComponent implements OnInit {
       limit: this.limit
     };
 
-    this.requestNewData.emit(pagEvent);
+    this.emitAction.emit({
+      type: TableTypeActions.REQUEST_DATA,
+      payload: pagEvent
+    });
+
     this.actualPage = finalPage;
   }
 
   public onRowClick(id: string) {
-    this.rowClick.emit(id);
+    this.emitAction.emit({
+      type: TableTypeActions.CLICK,
+      payload: id
+    });
   }
 }

@@ -19,9 +19,8 @@
 </div>
 <div class="search-result">
   <hero-table
-  *ngIf="tableConfig && tableHeros"
   [tableConfig]="tableConfig"
-  [tableData]="tableHeros"
-  (requestNewData)="launchSearch($event)"
-  (rowClick)="navDetails($event)"></hero-table>
+  [tableData]="tableHeros$ | async"
+  (emitAction)="doAction($event)"
+  ></hero-table>
 </div>
