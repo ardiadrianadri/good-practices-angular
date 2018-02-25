@@ -1,11 +1,3 @@
-.table-results { margin-top: 10px; }
-
-.pag { margin: 0px 5px; }
-
-select.form-control.pag { width: 5%; }
-
-tr.clickable { cursor: pointer; }
-
 h1.loading-banner {
   margin-top: 10%;
   font-size: 100px;

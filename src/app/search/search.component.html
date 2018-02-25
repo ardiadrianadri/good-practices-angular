@@ -1,17 +1,5 @@
-<div class="page-title">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <h1>Search your favorite hero</h1>
-    </div>
-  </div>
-</div>
-<div class="loading" *ngIf="loading">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <h1 class="loading-banner">Loading...</h1>
-    </div>
-  </div>
-</div>
+<hero-title title="Search your hero"></hero-title>
+<hero-loading *ngIf="loading"></hero-loading>
 <div class="search-form">
   <div class="container-fluid">
     <div class="row">
@@ -29,36 +17,11 @@
     </div>
   </div>
 </div>
-<div class="search-result"  *ngIf="heroesResult">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <table class="table table-hover table-bordered table-results">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let hero of heroesResult" (click)="navDetails(hero.id)" class="clickable">
-              <td>{{hero.name}}</td>
-              <td>{{hero.description}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <button type="button" class="btn btn-secondary pag" (click)="setPage(0)">first</button>
-      <button type="button" class="btn btn-secondary pag" (click)="setPage (actualPage - 1)">prev</button>
-      <select [(ngModel)]="limit" class="form-control pag" (change)="setLimit()">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-      </select>
-      <button type="button" class="btn btn-secondary pag" (click)="setPage(actualPage + 1)">next</button>
-      <button type="button" class="btn btn-secondary pag" (click)="setPage(lastPage)">last</button>
-    </div>
-  </div>
+<div class="search-result">
+  <hero-table
+  *ngIf="tableConfig && tableHeros"
+  [tableConfig]="tableConfig"
+  [tableData]="tableHeros"
+  (requestNewData)="launchSearch($event)"
+  (rowClick)="navDetails($event)"></hero-table>
 </div>

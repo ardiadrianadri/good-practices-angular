@@ -54,10 +54,10 @@ export class MarvelApi {
 
     if ('title' in data) {
       marvelElement = (data as MarvelElements);
-      result = ((marvelElement.title !== '') && (marvelElement.description !== ''));
+      result = ((marvelElement.title !== '') || (marvelElement.description !== ''));
     } else {
       marvelHero = (data as Hero);
-      result = ((marvelHero.name !== '') && (marvelHero.description !== ''));
+      result = ((marvelHero.name !== '') || (marvelHero.description !== ''));
     }
 
     return result;
