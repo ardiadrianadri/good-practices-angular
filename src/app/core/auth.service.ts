@@ -9,12 +9,30 @@ import { AuthToken } from "./auth-token";
 import { AuthParams } from './auth-params';
 import { AUTH_CONFIGURATION } from "./auth.configuration";
 
+/**
+ * Service to manage the App authentication process in the Marvel API
+ *
+ * @export
+ * @class AuthService
+ */
 @Injectable()
 export class AuthService {
+
+  /**
+   * Creates an instance of AuthService.
+   * @param {Observable<AuthToken>} _authConfig$ - Observable with the configuration parameters
+   * @memberof AuthService
+   */
   constructor(
     @Inject(AUTH_CONFIGURATION) private _authConfig$: Observable<AuthToken>
   ) {}
 
+  /**
+   * Method to get the authentication object
+   *
+   * @returns {Observable<AuthParams>} - Observable with the authentication Object
+   * @memberof AuthService
+   */
   public getAuthParams(): Observable<AuthParams> {
     return this._authConfig$
     .map((authToken: AuthToken) => {

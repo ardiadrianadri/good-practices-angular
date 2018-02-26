@@ -10,6 +10,12 @@ import { MarvelApi } from './marvel-api.service';
 import { MARVEL_API_CONFIGURATION, MarvelApiConfiguration } from './marvel-api.configuration';
 import { AUTH_CONFIGURATION, authConfiguration } from './auth.configuration';
 
+/**
+ * Core module where the providers used in several components are injected
+ *
+ * @export
+ * @class CoreModule
+ */
 @NgModule({
   imports: [
     HttpClientModule
@@ -22,6 +28,11 @@ import { AUTH_CONFIGURATION, authConfiguration } from './auth.configuration';
   ]
 })
 export class CoreModule {
+  /**
+   * Creates an instance of CoreModule. It is used to be sure that there is not more than one instance of the core module
+   * @param {CoreModule} _parent - Possible second instance of the core module
+   * @memberof CoreModule
+   */
   constructor (@SkipSelf() @Optional() _parent: CoreModule) {
     if (_parent) {
       throw new Error('The core module can only be injected once');

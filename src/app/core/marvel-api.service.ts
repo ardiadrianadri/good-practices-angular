@@ -14,29 +14,76 @@ import { MarvelAnswer } from '../common/marvel-answer';
 
 import { MARVEL_API_CONFIGURATION, idExpr } from './marvel-api.configuration';
 
+/**
+ * Service used to get the information of the Marvel characters from the Marvel API
+ *
+ * @export
+ * @class MarvelApi
+ */
 @Injectable()
 export class MarvelApi {
-
+  /**
+   * Private object with the list of API endpoints
+   *
+   * @private
+   * @type {MarvelEndPoints}
+   * @memberof MarvelApi
+   */
   private _endpoints: MarvelEndPoints;
 
+  /**
+   * Creates an instance of MarvelApi.
+   * @param {HttpClient} _http - Service to do http request
+   * @param {AuthService} _auth - Service to get the authentication object
+   * @param {Observable<MarvelEndPoints>} _marvelConfig$ - Observable with the list of endpoints
+   * @memberof MarvelApi
+   */
   constructor (
     private _http: HttpClient,
     private _auth: AuthService,
     @Inject(MARVEL_API_CONFIGURATION) private _marvelConfig$: Observable<MarvelEndPoints>
   ) {}
 
+  /**
+   * Private method to build the url with the authentication parameters
+   *
+   * @private
+   * @param {string} url - Url where the authentication parameters should be added
+   * @param {AuthParams} authParams - Object with the authentication parameters
+   * @returns {string} - Url with the authentication parameters
+   * @memberof MarvelApi
+   */
   private _setAuthParams(url: string, authParams: AuthParams): string {
     return (url.indexOf('?') < 0) ?
       `${url}?ts=${authParams.ts}&apikey=${authParams.apikey}&hash=${authParams.hash}` :
       `${url}&ts=${authParams.ts}&apikey=${authParams.apikey}&hash=${authParams.hash}`
   }
 
+  /**
+   * Private method to add the pagination parameters
+   *
+   * @private
+   * @param {string} url - Url where the pagination parameters should be added
+   * @param {number} limit - Maximum number of results in the request
+   * @param {number} offset - Number of result that should be ignored
+   * @returns {string} - Url with the pagination parameters added
+   * @memberof MarvelApi
+   */
   private _setPageParams(url: string, limit: number, offset: number): string {
     return (url.indexOf('?') < 0) ?
       `${url}?limit=${limit}&offset=${offset}` :
       `${url}&limit=${limit}&offset=${offset}`;
   }
 
+  /**
+   * Private method to build the object with the result of the http request
+   *
+   * @private
+   * @param {(Hero[] | MarvelElements[])} data - List of elements retrieved from the Marvel API
+   * @param {*} answerData - Object with the pagination data from the Marvel API
+   * @returns {MarvelAnswer} - Object return as result of each http request
+   * @memberof MarvelApi
+   */
   private _buildMarvelAnswer (data: Hero[] | MarvelElements[], answerData: any): MarvelAnswer {
     return {
       limit: answerData.limit,
@@ -47,6 +94,14 @@ export class MarvelApi {
     };
   }
 
+  /**
+   * Method used to remove the empty results of the Marvel API
+   *
+   * @private
+   * @param {(MarvelElements | Hero)} data - One result of the Marvel API
+   * @returns {boolean} - Return true if the element is empty
+   * @memberof MarvelApi
+   */
   private _filterEmptyResults (data: MarvelElements | Hero): boolean {
     let result: boolean;
     let marvelElement: MarvelElements;
@@ -63,6 +118,15 @@ export class MarvelApi {
     return result;
   }
 
+  /**
+   * Method used to get a list of Marvel characters
+   *
+   * @param {string} name - Partial name of the Marvel character
+   * @param {number} limit - Maximum number of results in the request
+   * @param {number} offset - Number of results ignored
+   * @returns {Observable<MarvelAnswer>} - Observable with the result of the API request
+   * @memberof MarvelApi
+   */
   public getListHeroes(name: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
@@ -91,6 +155,13 @@ export class MarvelApi {
     });
   }
 
+  /**
+   * Method used to get the details of one Marvel character
+   *
+   * @param {string} id - Id of the character
+   * @returns {Observable<MarvelAnswer>} - Result of the API request
+   * @memberof MarvelApi
+   */
   public getDetailsHero(id: string): Observable<MarvelAnswer> {
     return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
@@ -115,6 +186,15 @@ export class MarvelApi {
     });
   }
 
+  /**
+   * Method to get the list of Marvel comics of one character
+   *
+   * @param {string} id - Id of the Marvel character
+   * @param {number} limit - Maximum number of results
+   * @param {number} offset - Number of results ignored
+   * @returns {Observable<MarvelAnswer>} - Answer from the API request
+   * @memberof MarvelApi
+   */
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {
@@ -144,6 +224,15 @@ export class MarvelApi {
       });
   }
 
+  /**
+   * Method to get the list of Marvel series of one character
+   *
+   * @param {string} id - Id of the Marvel character
+   * @param {number} limit - Maximum number of result in the request
+   * @param {number} offset - Number of results ignored
+   * @returns {Observable<MarvelAnswer>} - Observable with answer from the Marvel API
+   * @memberof MarvelApi
+   */
   public getListSeries(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
     .concatMap((endpoints: MarvelEndPoints) => {

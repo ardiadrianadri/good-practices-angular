@@ -6,6 +6,12 @@ import { SharedModule } from '../shared/shared.module';
 import { HeroesSearchComponent } from './search.component';
 import { searchRoute } from './search.routes';
 
+/**
+ * Module for the search web page
+ *
+ * @export
+ * @class SearchModule
+ */
 @NgModule({
   imports: [
     SharedModule,
