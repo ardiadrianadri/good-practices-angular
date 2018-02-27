@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/switchMap';
 
 
@@ -12,12 +13,15 @@ import { TableData } from '../common/table-data';
 import { TableConfiguration } from '../common/table-configuration';
 import { PagEvent } from '../common/pag-event';
 import { BaseElement } from '../common/base-element';
+import { TableActions } from '../common/table-actions';
+import { TableTypeActions } from '../common/table-type-actions';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'detail-page',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DetailComponent implements OnInit {
 
@@ -27,8 +31,8 @@ export class DetailComponent implements OnInit {
 
   public title = 'Details of Character';
   public hero: Hero;
-  public comics: TableData;
-  public series: TableData;
+  public comics$: BehaviorSubject<TableData> = new BehaviorSubject<TableData>(null);
+  public series$: BehaviorSubject<TableData> = new BehaviorSubject<TableData>(null);
   public tableConfig: TableConfiguration;
   public loadingImage = true;
   public loadingComics = true;
@@ -52,8 +56,6 @@ export class DetailComponent implements OnInit {
       this.title = `Details of ${this.hero.name}`;
       this.loadingImage = false;
     });
-    this.getComics();
-    this.getSeries();
   }
 
   ngOnInit() {
@@ -63,7 +65,27 @@ export class DetailComponent implements OnInit {
         {title: 'Description', field: 'description'}
       ]
     };
+
+    this._getComics();
+    this._getSeries();
   }
+
+  public doActionComics (action: TableActions) {
+    switch(action.type) {
+      case TableTypeActions.REQUEST_DATA:
+        this._getComics(action.payload);
+        break;
+    }
+  }
+
+  public doActionSeries (action: TableActions) {
+    switch(action.type) {
+      case TableTypeActions.REQUEST_DATA:
+        this._getSeries(action.payload);
+        break;
+    }
+  }
+
   private _shortDescription (elements: TableData): TableData {
     elements.data = elements.data.map((element: BaseElement)=> {
       const marvelElement = (element as MarvelElements);
@@ -74,11 +96,11 @@ export class DetailComponent implements OnInit {
     return elements;
   }
 
-  public getComics(pagEvent?: PagEvent): void {
+  private _getComics(pagEvent?: PagEvent): void {
     const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
     this.loadingComics = true;
     this._marvelService.getListComics(this._id, DetailComponent._limit, (DetailComponent._limit * eventPag.page))
-    .map((answer: MarvelAnswer) => {
+    .subscribe ((answer: MarvelAnswer) => {
       const comicsLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
       let tableData: TableData = {
         data: answer.result,
@@ -87,18 +109,15 @@ export class DetailComponent implements OnInit {
 
       tableData = this._shortDescription(tableData);
       this.loadingComics = false;
-      return tableData;
-    })
-    .subscribe((comics: TableData) => {
-      this.comics = comics;
-    });;
+      this.comics$.next(tableData);
+    });
   }
 
-  public getSeries(pagEvent?: PagEvent): void {
+  private _getSeries(pagEvent?: PagEvent): void {
     const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
     this.loadingSeries = true;
     this._marvelService.getListSeries(this._id, DetailComponent._limit, (DetailComponent._limit * eventPag.page))
-    .map((answer: MarvelAnswer) => {
+    .subscribe((answer: MarvelAnswer) => {
       const seriesLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
       let tableData: TableData = {
         data: answer.result,
@@ -107,14 +126,10 @@ export class DetailComponent implements OnInit {
 
       tableData = this._shortDescription(tableData);
       this.loadingSeries = false;
-      return tableData;
-    })
-    .subscribe(
-      (series: TableData) => {
-        this.series = series;
-      },
-      (err) => { throw new Error(err); }
-    );
+      this.series$.next(tableData);
+    },
+    (err: any) => { throw new Error(err); }
+  );
   }
 
   public goHome() {
