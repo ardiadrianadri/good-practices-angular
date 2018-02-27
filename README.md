@@ -2,7 +2,7 @@
 
 The advantages of the comments in the code are well known by most of the developers. For newcomers, they help to understand the solution and, for you, help you understand why you coded that solution (usually, it follows a sense of shame). Despite this, it is common to find the code without comments or comments that are difficult to understand. It is because developers do not like to write documentation, they like to think that their own code is sufficient to explain what is happening in the application, or because the methodology for writing comments is not clear. However, since the release of living documentation tools, those excuses are no longer true. 
 
-TLiving documentation tools, such as "Compodoc" or "JSDocs", are tools to generate documentation through the comments of the code. Scan the code looking for some specific headings of comments like this one:
+The Living documentation tools, such as "Compodoc" or "JSDocs", are tools to generate documentation through the comments of the code. Scan the code looking for some specific headings of comments like this one:
 
 ```
 /**
