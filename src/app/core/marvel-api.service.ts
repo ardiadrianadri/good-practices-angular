@@ -2,8 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/concatMap';
-import 'rxjs/add/operator/map';
+import { concatMap , map } from 'rxjs/operators';
 
 import { AuthParams } from './auth-params';
 import { MarvelEndPoints } from './marvel-endpoints';
@@ -129,30 +128,32 @@ export class MarvelApi {
    */
   public getListHeroes(name: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
-    .concatMap((endpoints: MarvelEndPoints) => {
-      this._endpoints = endpoints;
-      return this._auth.getAuthParams();
-    })
-    .concatMap ((authPraams: AuthParams) => {
-      let finalUrl = this._setAuthParams(this._endpoints.searchCharacter, authPraams);
-      finalUrl = `${finalUrl}&nameStartsWith=${name}`;
-      finalUrl = this._setPageParams(finalUrl, limit, offset);
-      return this._http.get(finalUrl);
-    })
-    .map((answer: any) => {
-      const heroes: Hero[] = answer.data.results.map((marvelHero: any) => {
-        const hero: Hero = {
-          id: marvelHero.id,
-          name: marvelHero.name,
-          description: marvelHero.description,
-          image: `${marvelHero.thumbnail.path}.${marvelHero.thumbnail.extension}`
-        }
-        return hero;
-      })
-      .filter((hero: Hero) => this._filterEmptyResults(hero));
+    .pipe(
+      concatMap((endpoints: MarvelEndPoints) => {
+        this._endpoints = endpoints;
+        return this._auth.getAuthParams();
+      }),
+      concatMap ((authPraams: AuthParams) => {
+        let finalUrl = this._setAuthParams(this._endpoints.searchCharacter, authPraams);
+        finalUrl = `${finalUrl}&nameStartsWith=${name}`;
+        finalUrl = this._setPageParams(finalUrl, limit, offset);
+        return this._http.get(finalUrl);
+      }),
+      map((answer: any) => {
+        const heroes: Hero[] = answer.data.results.map((marvelHero: any) => {
+          const hero: Hero = {
+            id: marvelHero.id,
+            name: marvelHero.name,
+            description: marvelHero.description,
+            image: `${marvelHero.thumbnail.path}.${marvelHero.thumbnail.extension}`
+          }
+          return hero;
+        })
+        .filter((hero: Hero) => this._filterEmptyResults(hero));
 
-      return this._buildMarvelAnswer(heroes, answer.data);
-    });
+        return this._buildMarvelAnswer(heroes, answer.data);
+      })
+    );
   }
 
   /**
@@ -164,26 +165,28 @@ export class MarvelApi {
    */
   public getDetailsHero(id: string): Observable<MarvelAnswer> {
     return this._marvelConfig$
-    .concatMap((endpoints: MarvelEndPoints) => {
-      this._endpoints = endpoints;
-      return this._auth.getAuthParams();
-    })
-    .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.detailsCharacter.replace(idExpr, id);
-      finalUrl = this._setAuthParams(finalUrl, authParams);
+    .pipe(
+      concatMap((endpoints: MarvelEndPoints) => {
+        this._endpoints = endpoints;
+        return this._auth.getAuthParams();
+      }),
+      concatMap((authParams: AuthParams) => {
+        let finalUrl = this._endpoints.detailsCharacter.replace(idExpr, id);
+        finalUrl = this._setAuthParams(finalUrl, authParams);
 
-      return this._http.get(finalUrl);
-    })
-    .map((answer: any) => {
-      const hero: Hero = {
-        id: answer.data.results[0].id,
-        name: answer.data.results[0].name,
-        description: answer.data.results[0].description,
-        image: `${answer.data.results[0].thumbnail.path}.${answer.data.results[0].thumbnail.extension}`
-      }
+        return this._http.get(finalUrl);
+      }),
+      map((answer: any) => {
+        const hero: Hero = {
+          id: answer.data.results[0].id,
+          name: answer.data.results[0].name,
+          description: answer.data.results[0].description,
+          image: `${answer.data.results[0].thumbnail.path}.${answer.data.results[0].thumbnail.extension}`
+        }
 
-      return this._buildMarvelAnswer([hero], answer.data);
-    });
+        return this._buildMarvelAnswer([hero], answer.data);
+      })
+    );
   }
 
   /**
@@ -197,31 +200,33 @@ export class MarvelApi {
    */
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
-    .concatMap((endpoints: MarvelEndPoints) => {
-      this._endpoints = endpoints;
-      return this._auth.getAuthParams();
-    })
-    .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.comicsCharacter.replace(idExpr,id);
-        finalUrl = this._setAuthParams(finalUrl, authParams);
-        finalUrl = this._setPageParams(finalUrl, limit, offset);
+    .pipe(
+      concatMap((endpoints: MarvelEndPoints) => {
+        this._endpoints = endpoints;
+        return this._auth.getAuthParams();
+      }),
+      concatMap((authParams: AuthParams) => {
+        let finalUrl = this._endpoints.comicsCharacter.replace(idExpr,id);
+          finalUrl = this._setAuthParams(finalUrl, authParams);
+          finalUrl = this._setPageParams(finalUrl, limit, offset);
 
-        return this._http.get(finalUrl);
-      })
-      .map ((answer: any) => {
-        const comics: MarvelElements[] = answer.data.results.map((marvelComic: any) => {
-          const comic: MarvelElements = {
-            id: marvelComic.id,
-            title: marvelComic.title,
-            description: marvelComic.description
-          }
+          return this._http.get(finalUrl);
+        }),
+        map ((answer: any) => {
+          const comics: MarvelElements[] = answer.data.results.map((marvelComic: any) => {
+            const comic: MarvelElements = {
+              id: marvelComic.id,
+              title: marvelComic.title,
+              description: marvelComic.description
+            }
 
-          return comic;
+            return comic;
+          })
+          .filter((comic: MarvelElements) => this._filterEmptyResults(comic));
+
+          return this._buildMarvelAnswer(comics, answer.data);
         })
-        .filter((comic: MarvelElements) => this._filterEmptyResults(comic));
-
-        return this._buildMarvelAnswer(comics, answer.data);
-      });
+    );
   }
 
   /**
@@ -235,30 +240,32 @@ export class MarvelApi {
    */
   public getListSeries(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._marvelConfig$
-    .concatMap((endpoints: MarvelEndPoints) => {
-      this._endpoints = endpoints;
-      return this._auth.getAuthParams();
-    })
-    .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.seriesCharacter.replace(idExpr,id);
-      finalUrl = this._setAuthParams(finalUrl, authParams);
-      finalUrl = this._setPageParams(finalUrl, limit, offset);
+    .pipe(
+      concatMap((endpoints: MarvelEndPoints) => {
+        this._endpoints = endpoints;
+        return this._auth.getAuthParams();
+      }),
+      concatMap((authParams: AuthParams) => {
+        let finalUrl = this._endpoints.seriesCharacter.replace(idExpr,id);
+        finalUrl = this._setAuthParams(finalUrl, authParams);
+        finalUrl = this._setPageParams(finalUrl, limit, offset);
 
-      return this._http.get(finalUrl);
-    })
-    .map ((answer: any) => {
-      const series: MarvelElements[] = answer.data.results.map((marvelSerie: any) => {
-        const serie: MarvelElements = {
-          id: marvelSerie.id,
-          title: marvelSerie.title,
-          description: marvelSerie.description
-        }
+        return this._http.get(finalUrl);
+      }),
+      map ((answer: any) => {
+        const series: MarvelElements[] = answer.data.results.map((marvelSerie: any) => {
+          const serie: MarvelElements = {
+            id: marvelSerie.id,
+            title: marvelSerie.title,
+            description: marvelSerie.description
+          }
 
-        return serie;
+          return serie;
+        })
+        .filter((serie: MarvelElements) => this._filterEmptyResults(serie));
+
+        return this._buildMarvelAnswer(series, answer.data);
       })
-      .filter((serie: MarvelElements) => this._filterEmptyResults(serie));
-
-      return this._buildMarvelAnswer(series, answer.data);
-    });
+    );
   }
 }

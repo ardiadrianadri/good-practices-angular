@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@angular/core";
 
 import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
+import { map } from "rxjs/operators";
 
 import { Md5 } from "ts-md5/dist/md5";
 
@@ -35,7 +35,8 @@ export class AuthService {
    */
   public getAuthParams(): Observable<AuthParams> {
     return this._authConfig$
-    .map((authToken: AuthToken) => {
+    .pipe(
+      map((authToken: AuthToken) => {
       let ts: string;
       let hash: string;
       let apikey: string;
@@ -57,6 +58,7 @@ export class AuthService {
         apikey: apikey,
         hash: hash
       };
-    });
+    })
+  );
   }
 }
