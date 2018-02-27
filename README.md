@@ -2,7 +2,7 @@
 
 Our table example is really simple, it has only two events, the request data event that is used each time the table needs a new page, and the click event that is executed when the user clicks on a row. However, it is not usual to have such a simple table. In general, the table has sort events, drag and drop, scroll, etc. If we remain in the two-ways data bind pattern, it means that we must have an attribute "@Output" for each of these events. To make it clearer, a component that shares five events needs five output attributes, which means that, in the template, it must have five more html attributes and each of them must match the implementation of a public method in the component father . It could be a bit difficult to maintain.
 
-The two-ways data binding has another inconvinient. The view should be updated each time one of the component's inputs changes. Angular achives that with ZoneJS. There are several articles that explains what is ZoneJS and how it works. Here they are some:
+The two-ways data binding has another inconvinient. The view should be updated each time one of the component's inputs changes. Angular achieves that with ZoneJS. There are several articles that explains what is ZoneJS and how it works. Here they are some:
 
 * [Understanding Zones](https://blog.thoughtram.io/angular/2016/01/22/understanding-zones.html)
 * [Zones in Angular 2](https://blog.thoughtram.io/angular/2016/02/01/zones-in-angular-2.html)
