@@ -1,7 +1,7 @@
 import { BaseElement } from './base-element';
 
 /**
- * All Marvel elements which does not fit in a hero definition
+ * All Marvel elements which do not fit in a hero definition
  *
  * @export
  * @interface MarvelElements

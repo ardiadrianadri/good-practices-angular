@@ -1,5 +1,5 @@
 /**
- * Definition of a page for the table
+ * Definition of the object sent on a pagination event in the table
  *
  * @export
  * @interface PagEvent
