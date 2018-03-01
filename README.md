@@ -37,3 +37,6 @@ And replace the strings "<Your public key from marvel account>" and "<Your priva
 
 ### Alfredo de la Calle:
 Angular, React, Polymer, native javascript ..... all-terrain developer. Alfredo has worked in startups and some project of IT consultancies.  Currently, he works at GFT consulting as a front-end developer.
+
+### Oleksandr Fedotov:
+Full-stack developer, with a special passion for front-end development. Big fan of Javascript and functional programming. At the moment working as an IT Consultant at Netlight in Munich.
