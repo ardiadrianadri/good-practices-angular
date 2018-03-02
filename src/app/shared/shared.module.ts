@@ -17,6 +17,12 @@ const SharedImports = [
   FormsModule
 ]
 
+/**
+ * Module for all the components which are used in two or more views
+ *
+ * @export
+ * @class SharedModule
+ */
 @NgModule({
   imports: [
     ...SharedImports

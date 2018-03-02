@@ -9,7 +9,12 @@ import { SearchModule } from './search/search.module';
 import { DetailsModule } from './details/details.module';
 import { CoreModule } from './core/core.module';
 
-
+/**
+ * Main module of the app
+ *
+ * @export
+ * @class AppModule
+ */
 @NgModule({
   declarations: [
     AppComponent

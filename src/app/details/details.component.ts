@@ -16,6 +16,13 @@ import { BaseElement } from '../common/base-element';
 import { TableActions } from '../common/table-actions';
 import { TableTypeActions } from '../common/table-type-actions';
 
+/**
+ * Component used to render the details view
+ *
+ * @export
+ * @class DetailComponent
+ * @implements {OnInit}
+ */
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'detail-page',
@@ -25,23 +32,114 @@ import { TableTypeActions } from '../common/table-type-actions';
 })
 export class DetailComponent implements OnInit {
 
+  /**
+   * Limit of characters used in the description of the comics and series
+   *
+   * @private
+   * @static
+   * @memberof DetailComponent
+   */
   private static _descriptionLimit = 50;
+
+  /**
+   * Maximum number of result rendered in the tables
+   *
+   * @private
+   * @static
+   * @memberof DetailComponent
+   */
   private static _limit = 5;
+
+  /**
+   * Id of Marvel character which details are rendered in the view
+   *
+   * @private
+   * @type {string}
+   * @memberof DetailComponent
+   */
   private _id: string;
 
+  /**
+   * Default title of the view
+   *
+   * @memberof DetailComponent
+   */
   public title = 'Details of Character';
+
+  /**
+   * Object with the details of the Marvel character
+   *
+   * @type {Hero}
+   * @memberof DetailComponent
+   */
   public hero: Hero;
+
+  /**
+   * Observable with the list of comics of the character
+   *
+   * @type {BehaviorSubject<TableData>}
+   * @memberof DetailComponent
+   */
   public comics$: BehaviorSubject<TableData> = new BehaviorSubject<TableData>(null);
+
+  /**
+   * Observable with the list of series of the character
+   *
+   * @type {BehaviorSubject<TableData>}
+   * @memberof DetailComponent
+   */
   public series$: BehaviorSubject<TableData> = new BehaviorSubject<TableData>(null);
+
+  /**
+   * Configuration of the two tables
+   *
+   * @type {TableConfiguration}
+   * @memberof DetailComponent
+   */
   public tableConfig: TableConfiguration;
+
+  /**
+   * Flag to show or hide the loading component for the hero details
+   *
+   * @memberof DetailComponent
+   */
   public loadingImage = true;
+
+  /**
+   * Flag to show or hide the loading component for the comics table
+   *
+   * @memberof DetailComponent
+   */
   public loadingComics = true;
+
+  /**
+   * Flag to show or hide the loading component for the series table
+   *
+   * @memberof DetailComponent
+   */
   public loadingSeries = true;
 
+  /**
+   * Last page of the commics table
+   *
+   * @memberof DetailComponent
+   */
   public comicsLastPage = 0;
 
+  /**
+   * Last page of the series table
+   *
+   * @memberof DetailComponent
+   */
   public seriesLastPage = 0;
 
+  /**
+   * Creates an instance of DetailComponent.
+   * @param {MarvelApi} _marvelService - Service to get the data from the Marvel API
+   * @param {ActivatedRoute} _router - Activated route of the details view
+   * @param {Router} _navRouter - The router
+   * @memberof DetailComponent
+   */
   constructor(
     private _marvelService: MarvelApi,
     private _router: ActivatedRoute,
@@ -58,6 +156,11 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  /**
+   * Event onInit of the life cicle of the component. It is used to initialized the view
+   *
+   * @memberof DetailComponent
+   */
   ngOnInit() {
     this.tableConfig = {
       columns: [
@@ -70,6 +173,12 @@ export class DetailComponent implements OnInit {
     this._getSeries();
   }
 
+  /**
+   * Method used to catch the events on the comics table
+   *
+   * @param {TableActions} action
+   * @memberof DetailComponent
+   */
   public doActionComics (action: TableActions) {
     switch(action.type) {
       case TableTypeActions.REQUEST_DATA:
@@ -78,6 +187,12 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  /**
+   * Method used to catch the events on the series table
+   *
+   * @param {TableActions} action
+   * @memberof DetailComponent
+   */
   public doActionSeries (action: TableActions) {
     switch(action.type) {
       case TableTypeActions.REQUEST_DATA:
@@ -86,6 +201,23 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  /**
+   * Method to navigate at the home web site
+   *
+   * @memberof DetailComponent
+   */
+  public goHome() {
+    this._navRouter.navigateByUrl('heroes-search');
+  }
+
+  /**
+   * Private method used to shorten the description in the series and comics tables
+   *
+   * @private
+   * @param {TableData} elements
+   * @returns {TableData}
+   * @memberof DetailComponent
+   */
   private _shortDescription (elements: TableData): TableData {
     elements.data = elements.data.map((element: BaseElement)=> {
       const marvelElement = (element as MarvelElements);
@@ -96,6 +228,13 @@ export class DetailComponent implements OnInit {
     return elements;
   }
 
+  /**
+   * Private method to request data about the comics of the Marvel character
+   *
+   * @private
+   * @param {PagEvent} [pagEvent] - Object with the pagination data
+   * @memberof DetailComponent
+   */
   private _getComics(pagEvent?: PagEvent): void {
     const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
     this.loadingComics = true;
@@ -113,6 +252,13 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  /**
+   * Private method to request information about the series of the Marvel character
+   *
+   * @private
+   * @param {PagEvent} [pagEvent] - Object with the pagination data
+   * @memberof DetailComponent
+   */
   private _getSeries(pagEvent?: PagEvent): void {
     const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
     this.loadingSeries = true;
@@ -132,7 +278,4 @@ export class DetailComponent implements OnInit {
   );
   }
 
-  public goHome() {
-    this._navRouter.navigateByUrl('heroes-search');
-  }
 }
