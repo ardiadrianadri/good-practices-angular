@@ -12,6 +12,7 @@ import { TableConfiguration } from '../common/table-configuration';
 import { PagEvent } from '../common/pag-event';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],

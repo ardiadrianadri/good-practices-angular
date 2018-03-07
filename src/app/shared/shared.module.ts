@@ -10,12 +10,12 @@ const SharedComponents = [
   TitleComponent,
   LoadingComponent,
   TableComponent
-]
+];
 
 const SharedImports = [
   CommonModule,
   FormsModule
-]
+];
 
 @NgModule({
   imports: [

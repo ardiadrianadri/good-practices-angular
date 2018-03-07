@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 
-
 import { Hero } from '../common/hero';
 import { MarvelElements } from '../common/marvel-elements';
 import { MarvelAnswer } from '../common/marvel-answer';
@@ -20,7 +19,6 @@ import { BaseElement } from '../common/base-element';
   styleUrls: ['./details.component.css']
 })
 export class DetailComponent implements OnInit {
-
   private static _descriptionLimit = 50;
   private static _limit = 5;
   private _id: string;
@@ -43,15 +41,15 @@ export class DetailComponent implements OnInit {
     private _router: ActivatedRoute,
     private _navRouter: Router
   ) {
-
     this._id = this._router.snapshot.params.id;
 
-    this._marvelService.getDetailsHero(this._id)
-    .subscribe((answer: MarvelAnswer) => {
-      this.hero = (answer.result[0] as Hero);
-      this.title = `Details of ${this.hero.name}`;
-      this.loadingImage = false;
-    });
+    this._marvelService
+      .getDetailsHero(this._id)
+      .subscribe((answer: MarvelAnswer) => {
+        this.hero = answer.result[0] as Hero;
+        this.title = `Details of ${this.hero.name}`;
+        this.loadingImage = false;
+      });
     this.getComics();
     this.getSeries();
   }
@@ -59,62 +57,90 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.tableConfig = {
       columns: [
-        {title: 'Title', field: 'title'},
-        {title: 'Description', field: 'description'}
+        { title: 'Title', field: 'title' },
+        { title: 'Description', field: 'description' }
       ]
     };
   }
-  private _shortDescription (elements: TableData): TableData {
-    elements.data = elements.data.map((element: BaseElement)=> {
-      const marvelElement = (element as MarvelElements);
-      marvelElement.description = (marvelElement.description) ? marvelElement.description.substring(0, DetailComponent._descriptionLimit): '';
+  private _shortDescription(elements: TableData): TableData {
+    elements.data = elements.data.map((element: BaseElement) => {
+      const marvelElement = element as MarvelElements;
+      marvelElement.description = marvelElement.description
+        ? marvelElement.description.substring(
+            0,
+            DetailComponent._descriptionLimit
+          )
+        : '';
       return marvelElement;
-    })
+    });
 
     return elements;
   }
 
   public getComics(pagEvent?: PagEvent): void {
-    const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
+    const eventPag: PagEvent = pagEvent
+      ? pagEvent
+      : { page: 0, limit: DetailComponent._limit };
     this.loadingComics = true;
-    this._marvelService.getListComics(this._id, DetailComponent._limit, (DetailComponent._limit * eventPag.page))
-    .map((answer: MarvelAnswer) => {
-      const comicsLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
-      let tableData: TableData = {
-        data: answer.result,
-        lastPage: comicsLastPage
-      };
+    this._marvelService
+      .getListComics(
+        this._id,
+        DetailComponent._limit,
+        DetailComponent._limit * eventPag.page
+      )
+      .map((answer: MarvelAnswer) => {
+        const comicsLastPage =
+          Math.ceil(answer.total / DetailComponent._limit) - 1;
+        let tableData: TableData = {
+          data: answer.result,
+          lastPage: comicsLastPage
+        };
 
-      tableData = this._shortDescription(tableData);
-      this.loadingComics = false;
-      return tableData;
-    })
-    .subscribe((comics: TableData) => {
-      this.comics = comics;
-    });;
+        tableData = this._shortDescription(tableData);
+        this.loadingComics = false;
+        return tableData;
+      })
+      .subscribe(
+        (comics: TableData) => {
+          this.comics = comics;
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
   }
 
   public getSeries(pagEvent?: PagEvent): void {
-    const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: DetailComponent._limit };
+    const eventPag: PagEvent = pagEvent
+      ? pagEvent
+      : { page: 0, limit: DetailComponent._limit };
     this.loadingSeries = true;
-    this._marvelService.getListSeries(this._id, DetailComponent._limit, (DetailComponent._limit * eventPag.page))
-    .map((answer: MarvelAnswer) => {
-      const seriesLastPage = Math.ceil(answer.total / DetailComponent._limit) - 1;
-      let tableData: TableData = {
-        data: answer.result,
-        lastPage: seriesLastPage
-      };
+    this._marvelService
+      .getListSeries(
+        this._id,
+        DetailComponent._limit,
+        DetailComponent._limit * eventPag.page
+      )
+      .map((answer: MarvelAnswer) => {
+        const seriesLastPage =
+          Math.ceil(answer.total / DetailComponent._limit) - 1;
+        let tableData: TableData = {
+          data: answer.result,
+          lastPage: seriesLastPage
+        };
 
-      tableData = this._shortDescription(tableData);
-      this.loadingSeries = false;
-      return tableData;
-    })
-    .subscribe(
-      (series: TableData) => {
-        this.series = series;
-      },
-      (err) => { throw new Error(err); }
-    );
+        tableData = this._shortDescription(tableData);
+        this.loadingSeries = false;
+        return tableData;
+      })
+      .subscribe(
+        (series: TableData) => {
+          this.series = series;
+        },
+        err => {
+          throw new Error(err);
+        }
+      );
   }
 
   public goHome() {
