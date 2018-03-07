@@ -23,13 +23,13 @@ export class MarvelApi {
       detailsCharacter: '/v1/public/characters/##id##',
       comicsCharacter: '/v1/public/characters/##id##/comics',
       seriesCharacter: '/v1/public/characters/##id##/series'
-    }
+    };
   }
 
   private _setAuthParams(url: string, authParams: AuthParams): string {
     return (url.indexOf('?') < 0) ?
       `${url}?ts=${authParams.ts}&apikey=${authParams.apikey}&hash=${authParams.hash}` :
-      `${url}&ts=${authParams.ts}&apikey=${authParams.apikey}&hash=${authParams.hash}`
+      `${url}&ts=${authParams.ts}&apikey=${authParams.apikey}&hash=${authParams.hash}`;
   }
 
   private _setPageParams(url: string, limit: number, offset: number): string {
@@ -79,7 +79,7 @@ export class MarvelApi {
           name: marvelHero.name,
           description: marvelHero.description,
           image: `${marvelHero.thumbnail.path}.${marvelHero.thumbnail.extension}`
-        }
+        };
         return hero;
       })
       .filter((hero: Hero) => this._filterEmptyResults(hero));
@@ -102,7 +102,7 @@ export class MarvelApi {
         name: answer.data.results[0].name,
         description: answer.data.results[0].description,
         image: `${answer.data.results[0].thumbnail.path}.${answer.data.results[0].thumbnail.extension}`
-      }
+      };
 
       return this._buildMarvelAnswer([hero], answer.data);
     });
@@ -111,7 +111,7 @@ export class MarvelApi {
   public getListComics(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
       return this._auth.getAuthParams()
       .concatMap((authParams: AuthParams) => {
-        let finalUrl = this._endpoints.comicsCharacter.replace('##id##',id);
+        let finalUrl = this._endpoints.comicsCharacter.replace('##id##', id);
         finalUrl = this._setAuthParams(finalUrl, authParams);
         finalUrl = this._setPageParams(finalUrl, limit, offset);
 
@@ -123,7 +123,7 @@ export class MarvelApi {
             id: marvelComic.id,
             title: marvelComic.title,
             description: marvelComic.description
-          }
+          };
 
           return comic;
         })
@@ -136,7 +136,7 @@ export class MarvelApi {
   public getListSeries(id: string, limit: number, offset: number): Observable<MarvelAnswer> {
     return this._auth.getAuthParams()
     .concatMap((authParams: AuthParams) => {
-      let finalUrl = this._endpoints.seriesCharacter.replace('##id##',id);
+      let finalUrl = this._endpoints.seriesCharacter.replace('##id##', id);
       finalUrl = this._setAuthParams(finalUrl, authParams);
       finalUrl = this._setPageParams(finalUrl, limit, offset);
 
@@ -148,7 +148,7 @@ export class MarvelApi {
           id: marvelSerie.id,
           title: marvelSerie.title,
           description: marvelSerie.description
-        }
+        };
 
         return serie;
       })

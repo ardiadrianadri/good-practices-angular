@@ -36,7 +36,7 @@ export class HeroesSearchComponent {
       (data: MarvelAnswer) => {
         this.lastPage = Math.ceil(data.total / this.limit) - 1;
         this.heroesResult = (data.result as Hero[]).map((hero: Hero) => {
-          hero.description = (hero.description) ? hero.description.substring(0,100) : '';
+          hero.description = (hero.description) ? hero.description.substring(0, 100) : '';
           return hero;
         });
         this.loading = false;

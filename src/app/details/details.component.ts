@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-
 
 import { Hero } from '../common/hero';
 import { MarvelElements } from '../common/marvel-elements';
@@ -16,7 +14,6 @@ import { MarvelApi } from '../core/marvel-api.service';
   styleUrls: ['./details.component.css']
 })
 export class DetailComponent {
-
   private _limit = 5;
   private _id: string;
 
@@ -38,52 +35,65 @@ export class DetailComponent {
     private _router: ActivatedRoute,
     private _navRouter: Router
   ) {
-
     this._id = this._router.snapshot.params.id;
 
-    this._marvelService.getDetailsHero(this._id)
-    .switchMap((answer: MarvelAnswer) => {
-      this.hero = (answer.result[0] as Hero);
-      this.loadingImage = false;
-      return this._getComics();
-    })
-    .switchMap((comics: MarvelElements[]) => {
-      this.comics = this._shortDescription(comics);
-      return this._getSeries()
-    })
-    .subscribe(
-      (series: MarvelElements[]) => {
-        this.series = this._shortDescription(series);
+    this._marvelService.getDetailsHero(this._id).subscribe(
+      (answer: MarvelAnswer) => {
+        this.hero = answer.result[0] as Hero;
+        this.loadingImage = false;
       },
-      (err) => { throw new Error(err); }
+      (error: any) => {
+        throw new Error(error);
+      }
     );
+
+    this._getComics();
+    this._getSeries();
   }
 
-  private _getComics(): Observable<MarvelElements[]> {
+  private _getComics() {
     this.loadingComics = true;
-    return this._marvelService.getListComics(this._id, this._limit, (this._limit * this.comicsPage))
-    .map((answer: MarvelAnswer) => {
-      this.comicsLastPage = Math.ceil(answer.total / this._limit) - 1;
-      this.loadingComics = false;
-      return (answer.result as MarvelElements[]);
-    });
+    this._marvelService
+      .getListComics(this._id, this._limit, this._limit * this.comicsPage)
+      .subscribe(
+        (answer: MarvelAnswer) => {
+          this.comicsLastPage = Math.ceil(answer.total / this._limit) - 1;
+          this.loadingComics = false;
+          this.comics = this._shortDescription(
+            answer.result as MarvelElements[]
+          );
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
   }
 
-  private _shortDescription (elements: MarvelElements[]): MarvelElements[] {
+  private _shortDescription(elements: MarvelElements[]): MarvelElements[] {
     return elements.map((element: MarvelElements) => {
-      element.description = (element.description) ? element.description.substring(0,50) : '';
+      element.description = element.description
+        ? element.description.substring(0, 50)
+        : '';
       return element;
     });
   }
 
-  private _getSeries(): Observable<MarvelElements[]> {
+  private _getSeries() {
     this.loadingSeries = true;
-    return this._marvelService.getListSeries(this._id, this._limit, (this._limit * this.seriesPage))
-    .map((answer: MarvelAnswer) => {
-      this.seriesLastPage = Math.ceil(answer.total / this._limit) - 1;
-      this.loadingSeries = false;
-      return (answer.result as MarvelElements[]);
-    });
+    return this._marvelService
+      .getListSeries(this._id, this._limit, this._limit * this.seriesPage)
+      .subscribe(
+        (answer: MarvelAnswer) => {
+          this.seriesLastPage = Math.ceil(answer.total / this._limit) - 1;
+          this.loadingSeries = false;
+          this.series = this._shortDescription(
+            answer.result as MarvelElements[]
+          );
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
   }
 
   public goHome() {
@@ -91,24 +101,16 @@ export class DetailComponent {
   }
 
   public setComicPage(page: number) {
-    this.comicsPage = (page < 0) ? 0 :
-    (page > this.comicsLastPage) ? this.comicsLastPage : page;
+    this.comicsPage =
+      page < 0 ? 0 : page > this.comicsLastPage ? this.comicsLastPage : page;
 
-    this._getComics()
-    .subscribe(
-      (comics: MarvelElements[]) => { this.comics = this._shortDescription(comics); },
-      err => { throw new Error (err); }
-    );
+    this._getComics();
   }
 
-  public setSeriesPage (page: number) {
-    this.seriesPage = (page < 0) ? 0 :
-    (page > this.seriesLastPage) ? this.seriesLastPage : page;
+  public setSeriesPage(page: number) {
+    this.seriesPage =
+      page < 0 ? 0 : page > this.seriesLastPage ? this.seriesLastPage : page;
 
-    this._getSeries()
-    .subscribe(
-      (series: MarvelElements[]) => { this.series = this._shortDescription(series); },
-      err => { throw new Error (err); }
-    );
+    this._getSeries();
   }
 }

@@ -24,7 +24,7 @@ export class AuthService {
     let ts: string;
     let hash: string;
     let apikey: string;
-    let finalUrl: string;
+    const finalUrl = '';
 
     const md5: Md5 = new Md5();
 
