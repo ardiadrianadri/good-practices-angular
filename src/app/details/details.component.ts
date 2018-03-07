@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
@@ -20,7 +19,6 @@ import { MarvelElements } from './marvel-elements';
   styleUrls: ['./details.component.css']
 })
 export class DetailComponent {
-
   private _configToken: AuthToken;
   private _urlDetails: string;
   private _urlComics: string;
@@ -45,7 +43,6 @@ export class DetailComponent {
     private _router: ActivatedRoute,
     private _navRouter: Router
   ) {
-
     let id: string;
 
     this._configToken = {
@@ -60,28 +57,34 @@ export class DetailComponent {
     this._urlSeries = `${this._urlDetails}/series`;
 
     this._getUrl(this._urlDetails)
-    .concatMap((url: string) => this._http.get(url))
-    .switchMap((result: any) => {
-      this.hero = {
-        id: result.data.results[0].id,
-        name: result.data.results[0].name,
-        description: result.data.results[0].description,
-        image: `${result.data.results[0].thumbnail.path}.${result.data.results[0].thumbnail.extension}`
-      };
+      .concatMap((url: string) => this._http.get(url))
+      .subscribe(
+        (result: any) => {
+          this.hero = {
+            id: result.data.results[0].id,
+            name: result.data.results[0].name,
+            description: result.data.results[0].description,
+            image: `${result.data.results[0].thumbnail.path}.${
+              result.data.results[0].thumbnail.extension
+            }`
+          };
 
-      this.loadingImage = false;
-      return Observable.of(this.hero);
-    })
-    .switchMap(() => this._getComics())
-    .switchMap(() => this._getSeries())
-    .subscribe(
-      () => {},
-      (err) => { throw new Error(err); }
-    );
+          this.loadingImage = false;
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
 
+    this._getComics();
+    this._getSeries();
   }
 
-  private _getUrl(url: string, limit?: number, page?: number): Observable<string> {
+  private _getUrl(
+    url: string,
+    limit?: number,
+    page?: number
+  ): Observable<string> {
     let ts: string;
     let hash: string;
     let apikey: string;
@@ -101,50 +104,64 @@ export class DetailComponent {
 
     finalUrl = `${url}?ts=${ts}&hash=${hash}&apikey=${apikey}`;
 
-    finalUrl = finalUrl + ((limit != null) ? `&limit=${limit}` : '');
-    finalUrl = finalUrl + ((page != null) ? `&offset=${page * limit}` : '');
+    finalUrl = finalUrl + (limit != null ? `&limit=${limit}` : '');
+    finalUrl = finalUrl + (page != null ? `&offset=${page * limit}` : '');
 
     return Observable.of(finalUrl);
   }
 
-  private _getComics(): Observable<MarvelElements[]> {
+  private _getComics() {
     this.loadingComics = true;
-    return this._getUrl(this._urlComics, this._limit, this.comicsPage)
-    .concatMap((url: string) => this._http.get(url))
-    .do((result: any) => {
-      this.comicsLastPage = Math.ceil(result.data.total / this._limit) - 1;
-      this.comics = result.data.results.map((marvelComic: any) => {
-        const comic: MarvelElements = {
-          id: marvelComic.id,
-          title: marvelComic.title,
-          description: (marvelComic.description) ? `${marvelComic.description.substring(0, 50)}...` : ''
-        };
+    this._getUrl(this._urlComics, this._limit, this.comicsPage)
+      .concatMap((url: string) => this._http.get(url))
+      .subscribe(
+        (result: any) => {
+          this.comicsLastPage = Math.ceil(result.data.total / this._limit) - 1;
+          this.comics = result.data.results.map((marvelComic: any) => {
+            const comic: MarvelElements = {
+              id: marvelComic.id,
+              title: marvelComic.title,
+              description: marvelComic.description
+                ? `${marvelComic.description.substring(0, 50)}...`
+                : ''
+            };
 
-        return comic;
-      });
+            return comic;
+          });
 
-      this.loadingComics = false;
-    });
+          this.loadingComics = false;
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
   }
 
-  private _getSeries(): Observable<MarvelElements[]> {
+  private _getSeries() {
     this.loadingSeries = true;
-    return this._getUrl(this._urlSeries, this._limit, this.seriesPage)
-    .concatMap((url: string) => this._http.get(url))
-    .do((result: any) => {
-      this.seriesLastPage = Math.ceil(result.data.total / this._limit) - 1;
-      this.series = result.data.results.map((marvelSerie: any) => {
-        const serie: MarvelElements = {
-          id: marvelSerie.id,
-          title: marvelSerie.title,
-          description: (marvelSerie.description) ? `${marvelSerie.description.substring(0, 50)}...` : ''
-        };
+    this._getUrl(this._urlSeries, this._limit, this.seriesPage)
+      .concatMap((url: string) => this._http.get(url))
+      .subscribe(
+        (result: any) => {
+          this.seriesLastPage = Math.ceil(result.data.total / this._limit) - 1;
+          this.series = result.data.results.map((marvelSerie: any) => {
+            const serie: MarvelElements = {
+              id: marvelSerie.id,
+              title: marvelSerie.title,
+              description: marvelSerie.description
+                ? `${marvelSerie.description.substring(0, 50)}...`
+                : ''
+            };
 
-        return serie;
-      });
+            return serie;
+          });
 
-      this.loadingSeries = false;
-    });
+          this.loadingSeries = false;
+        },
+        (error: any) => {
+          throw new Error(error);
+        }
+      );
   }
 
   public goHome() {
@@ -152,24 +169,16 @@ export class DetailComponent {
   }
 
   public setComicPage(page: number) {
-    this.comicsPage = (page < 0) ? 0 :
-    (page > this.comicsLastPage) ? this.comicsLastPage : page;
+    this.comicsPage =
+      page < 0 ? 0 : page > this.comicsLastPage ? this.comicsLastPage : page;
 
-    this._getComics()
-    .subscribe(
-      () => {},
-      err => { throw new Error (err); }
-    );
+    this._getComics();
   }
 
-  public setSeriesPage (page: number) {
-    this.seriesPage = (page < 0) ? 0 :
-    (page > this.seriesLastPage) ? this.seriesLastPage : page;
+  public setSeriesPage(page: number) {
+    this.seriesPage =
+      page < 0 ? 0 : page > this.seriesLastPage ? this.seriesLastPage : page;
 
-    this._getSeries()
-    .subscribe(
-      () => {},
-      err => { throw new Error (err); }
-    );
+    this._getSeries();
   }
 }
