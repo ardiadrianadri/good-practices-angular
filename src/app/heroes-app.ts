@@ -8,9 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/concatMap';
-import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
 
 interface AuthToken {
@@ -475,7 +473,7 @@ export class DetailComponent {
 
     this._getUrl(this._urlDetails)
     .concatMap((url: string) => this._http.get(url))
-    .switchMap((result: any) => {
+    .concatMap((result: any) => {
       this.hero = {
         id: result.data.results[0].id,
         name: result.data.results[0].name,
@@ -486,13 +484,13 @@ export class DetailComponent {
       this.loadingImage = false;
       return Observable.of(this.hero);
     })
-    .switchMap(() => this._getComics())
-    .switchMap(() => this._getSeries())
     .subscribe(
       () => {},
       (err) => { throw new Error(err); }
     );
 
+    this._getComics();
+    this._getSeries();
   }
 
   private _getUrl(url: string, limit?: number, page?: number): Observable<string> {
@@ -521,11 +519,11 @@ export class DetailComponent {
     return Observable.of(finalUrl);
   }
 
-  private _getComics(): Observable<MarvelElements[]> {
+  private _getComics() {
     this.loadingComics = true;
-    return this._getUrl(this._urlComics, this._limit, this.comicsPage)
+    this._getUrl(this._urlComics, this._limit, this.comicsPage)
     .concatMap((url: string) => this._http.get(url))
-    .do((result: any) => {
+    .subscribe((result: any) => {
       this.comicsLastPage = Math.ceil(result.data.total / this._limit) - 1;
       this.comics = result.data.results.map((marvelComic: any) => {
         const comic: MarvelElements = {
@@ -541,11 +539,11 @@ export class DetailComponent {
     });
   }
 
-  private _getSeries(): Observable<MarvelElements[]> {
+  private _getSeries() {
     this.loadingSeries = true;
-    return this._getUrl(this._urlSeries, this._limit, this.seriesPage)
+    this._getUrl(this._urlSeries, this._limit, this.seriesPage)
     .concatMap((url: string) => this._http.get(url))
-    .do((result: any) => {
+    .subscribe((result: any) => {
       this.seriesLastPage = Math.ceil(result.data.total / this._limit) - 1;
       this.series = result.data.results.map((marvelSerie: any) => {
         const serie: MarvelElements = {
@@ -569,22 +567,14 @@ export class DetailComponent {
     this.comicsPage = (page < 0) ? 0 :
     (page > this.comicsLastPage) ? this.comicsLastPage : page;
 
-    this._getComics()
-    .subscribe(
-      () => {},
-      err => { throw new Error (err); }
-    );
+    this._getComics();
   }
 
   public setSeriesPage (page: number) {
     this.seriesPage = (page < 0) ? 0 :
     (page > this.seriesLastPage) ? this.seriesLastPage : page;
 
-    this._getSeries()
-    .subscribe(
-      () => {},
-      err => { throw new Error (err); }
-    );
+    this._getSeries();
   }
 }
 
