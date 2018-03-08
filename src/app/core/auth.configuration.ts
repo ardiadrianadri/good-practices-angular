@@ -19,7 +19,7 @@ new InjectionToken<Observable<AuthToken>>('AUTH_CONFIGURATION');
  * @returns {Observable<AuthToken>} - Observable with the configuration of the authentication process
  */
 export function authConfiguration(http: HttpClient): Observable<AuthToken> {
-  const configAuthToken = '/assets/marvel-tokens-dev.json';
+  const configAuthToken = '/assets/marvel-tokens.json';
 
   return http.get<AuthToken>(configAuthToken);
 }
