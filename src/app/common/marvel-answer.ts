@@ -43,4 +43,4 @@ export interface MarvelAnswer {
    * @memberof MarvelAnswer
    */
   result: Hero[] | MarvelElements[];
-};
+}

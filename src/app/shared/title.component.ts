@@ -7,6 +7,7 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@a
  * @class TitleComponent
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-title',
   templateUrl: './title.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -21,5 +22,5 @@ export class TitleComponent {
    * @memberof TitleComponent
    */
   @Input()
-  public title: string = '';
+  public title = '';
 }

@@ -23,6 +23,7 @@ import { TableTypeActions } from '../common/table-type-actions';
  * @implements {OnInit}
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],

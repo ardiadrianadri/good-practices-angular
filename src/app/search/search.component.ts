@@ -124,7 +124,7 @@ export class HeroesSearchComponent implements OnInit {
    * @memberof HeroesSearchComponent
    */
   public launchSearch( pagEvent: PagEvent) {
-    const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: 10 }
+    const eventPag: PagEvent = (pagEvent) ? pagEvent : { page: 0, limit: 10 };
 
     this.loading = true;
 

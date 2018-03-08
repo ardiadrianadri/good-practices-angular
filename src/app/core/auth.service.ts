@@ -1,13 +1,13 @@
-import { Injectable, Inject } from "@angular/core";
+import { Injectable, Inject } from '@angular/core';
 
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
-import { Md5 } from "ts-md5/dist/md5";
+import { Md5 } from 'ts-md5/dist/md5';
 
-import { AuthToken } from "./auth-token";
+import { AuthToken } from './auth-token';
 import { AuthParams } from './auth-params';
-import { AUTH_CONFIGURATION } from "./auth.configuration";
+import { AUTH_CONFIGURATION } from './auth.configuration';
 
 /**
  * Service to manage the App authentication process in the Marvel API
@@ -39,7 +39,7 @@ export class AuthService {
       let ts: string;
       let hash: string;
       let apikey: string;
-      let finalUrl: string;
+      const finalUrl = '';
 
       const md5: Md5 = new Md5();
 
