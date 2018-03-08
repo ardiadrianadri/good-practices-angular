@@ -9,7 +9,7 @@ export const AUTH_CONFIGURATION: InjectionToken<Observable<AuthToken>> =
 new InjectionToken<Observable<AuthToken>>('AUTH_CONFIGURATION');
 
 export function authConfiguration(http: HttpClient): Observable<AuthToken> {
-  const configAuthToken = '/assets/marvel-tokens-dev.json';
+  const configAuthToken = '/assets/marvel-tokens.json';
 
   return http.get<AuthToken>(configAuthToken);
 }
