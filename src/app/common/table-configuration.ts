@@ -33,19 +33,19 @@ export interface TableConfiguration {
    * @type {Column[]}
    * @memberof TableConfiguration
    */
-  columns: Column[],
+  columns: Column[];
   /**
    * Array with the differents size of the table pages
    *
    * @type {number[]}
    * @memberof TableConfiguration
    */
-  pageSize?: number[],
+  pageSize?: number[];
   /**
    * Value of the default size of the table page
    *
    * @type {number}
    * @memberof TableConfiguration
    */
-  initialSize?: number
+  initialSize?: number;
 }

@@ -7,6 +7,7 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@a
  * @class LoadingComponent
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.css'],
@@ -21,5 +22,5 @@ export class LoadingComponent {
    * @memberof LoadingComponent
    */
   @Input()
-  public msg = 'Loading...'
+  public msg = 'Loading...';
 }

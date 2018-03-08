@@ -178,7 +178,7 @@ export class DetailComponent implements OnInit {
    * @memberof DetailComponent
    */
   public doActionComics (action: TableActions) {
-    switch(action.type) {
+    switch (action.type) {
       case TableTypeActions.REQUEST_DATA:
         this._getComics(action.payload);
         break;
@@ -192,7 +192,7 @@ export class DetailComponent implements OnInit {
    * @memberof DetailComponent
    */
   public doActionSeries (action: TableActions) {
-    switch(action.type) {
+    switch (action.type) {
       case TableTypeActions.REQUEST_DATA:
         this._getSeries(action.payload);
         break;
@@ -217,11 +217,12 @@ export class DetailComponent implements OnInit {
    * @memberof DetailComponent
    */
   private _shortDescription (elements: TableData): TableData {
-    elements.data = elements.data.map((element: BaseElement)=> {
+    elements.data = elements.data.map((element: BaseElement) => {
       const marvelElement = (element as MarvelElements);
-      marvelElement.description = (marvelElement.description) ? marvelElement.description.substring(0, DetailComponent._descriptionLimit): '';
+      marvelElement.description = (marvelElement.description) ?
+      marvelElement.description.substring(0, DetailComponent._descriptionLimit) : '';
       return marvelElement;
-    })
+    });
 
     return elements;
   }

@@ -10,12 +10,12 @@ const SharedComponents = [
   TitleComponent,
   LoadingComponent,
   TableComponent
-]
+];
 
 const SharedImports = [
   CommonModule,
   FormsModule
-]
+];
 
 /**
  * Module for all the components which are used in two or more views
