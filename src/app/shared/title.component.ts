@@ -1,6 +1,7 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-title',
   templateUrl: './title.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -9,5 +10,5 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@a
 export class TitleComponent {
 
   @Input()
-  public title: string = '';
+  public title = '';
 }

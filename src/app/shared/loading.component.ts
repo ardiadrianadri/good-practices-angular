@@ -1,6 +1,7 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.css'],
@@ -10,5 +11,5 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@a
 export class LoadingComponent {
 
   @Input()
-  public msg = 'Loading...'
+  public msg = 'Loading...';
 }

@@ -16,6 +16,7 @@ import { TableActions } from '../common/table-actions';
 import { TableTypeActions } from '../common/table-type-actions';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'hero-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],

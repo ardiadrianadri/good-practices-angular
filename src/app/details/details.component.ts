@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/switchMap';
 
 
 import { Hero } from '../common/hero';
@@ -71,7 +70,7 @@ export class DetailComponent implements OnInit {
   }
 
   public doActionComics (action: TableActions) {
-    switch(action.type) {
+    switch (action.type) {
       case TableTypeActions.REQUEST_DATA:
         this._getComics(action.payload);
         break;
@@ -79,7 +78,7 @@ export class DetailComponent implements OnInit {
   }
 
   public doActionSeries (action: TableActions) {
-    switch(action.type) {
+    switch (action.type) {
       case TableTypeActions.REQUEST_DATA:
         this._getSeries(action.payload);
         break;
@@ -87,11 +86,12 @@ export class DetailComponent implements OnInit {
   }
 
   private _shortDescription (elements: TableData): TableData {
-    elements.data = elements.data.map((element: BaseElement)=> {
+    elements.data = elements.data.map((element: BaseElement ) => {
       const marvelElement = (element as MarvelElements);
-      marvelElement.description = (marvelElement.description) ? marvelElement.description.substring(0, DetailComponent._descriptionLimit): '';
+      marvelElement.description = (marvelElement.description) ?
+      marvelElement.description.substring(0, DetailComponent._descriptionLimit) : '';
       return marvelElement;
-    })
+    });
 
     return elements;
   }

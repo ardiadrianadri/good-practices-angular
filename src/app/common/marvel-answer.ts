@@ -7,4 +7,4 @@ export interface MarvelAnswer {
   total: number;
   count: number;
   result: Hero[] | MarvelElements[];
-};
+}
