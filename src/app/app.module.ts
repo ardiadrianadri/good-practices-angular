@@ -15,9 +15,7 @@ import { DetailsModule } from './details/details.module';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
-    SearchModule,
-    DetailsModule
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
