@@ -17,8 +17,6 @@ import { CoreModule } from './core/core.module';
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    SearchModule,
-    DetailsModule,
     CoreModule
   ],
   providers: [],
