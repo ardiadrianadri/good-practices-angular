@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { SearchModule } from './search/search.module';
-import { DetailsModule } from './details/details.module';
 import { CoreModule } from './core/core.module';
 
 
